@@ -115,9 +115,9 @@ More information in * https://github.com/containerd/containerd/blob/main/docs/ge
 
 
 fault = [0,0,0]
-ID = []
-discription = [] 
-score = [] 
+docker_result = []
+runc_result = []
+containerd_result = []
 daemon = { "Test":"docker" , "version":sys.argv[1] }
 runc = { "Test":"runc" , "version":sys.argv[2] }
 containerd = { "Test":"containerd" , "version":sys.argv[3] }
@@ -126,8 +126,9 @@ table = [daemon,runc,containerd]
 q = 0
 
 for test in table:
-
-	print(" ")
+	ID = []
+	discription = [] 
+	score = []
 	print(colored(test, 'blue', attrs=['bold']))
 	
 	platform = test["Test"]
@@ -146,7 +147,6 @@ for test in table:
 			url = f"https://services.nvd.nist.gov/rest/json/cves/1.0/?modStartDate={year}-{start}-01T13:00:00:000%20UTC%2B01:00&modEndDate={year}-{end}-31T13:36:00:000%20UTC%2B01:00&keyword=docker"	
 			req = requests.get(url)
 			r = requests.get(url)
-
 			try:		
 				file = open(f"/tmp/ll/file-{year}-{start}", "x")
 				file.write(r.text)
@@ -170,7 +170,7 @@ for test in table:
 						discription.append(x["CVE_Items"][k]["cve"]["description"]["description_data"][0]["value"])
 						score.append(x["CVE_Items"][k]["impact"]["baseMetricV3"]["cvssV3"]["baseScore"])
 						fault[q] = 1
-						print(ID,discription,score)
+						
 					else:
 						pass
 				else:
@@ -197,7 +197,7 @@ for test in table:
 							discription.append(x["CVE_Items"][k]["cve"]["description"]["description_data"][0]["value"])
 							score.append(x["CVE_Items"][k]["impact"]["baseMetricV3"]["cvssV3"]["baseScore"])
 							fault[q] = 1
-							print(ID,discription,score,fault)
+							
 							break
 						else:
 							pass
@@ -205,6 +205,23 @@ for test in table:
 
 
 				k +=1
+	if platform == "docker":
+		docker_result.append(ID)
+		docker_result.append(discription)
+		docker_result.append(score)
+		
+
+	elif platform == "runc":
+		runc_result.append(ID)
+		runc_result.append(discription)
+		runc_result.append(score)
+		
+	else:
+		containerd_result.append(ID)
+		containerd_result.append(discription)
+		containerd_result.append(score)
+
+
 	q +=1
 
 
