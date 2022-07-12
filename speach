@@ -1,0 +1,48 @@
+bonsoir a toutes et a tous, aujourd’hui nous allons présenter notre projet de fin d’étude intitulé la sectorisation automatisé des conteneurs, réaliser par moi yahiaoui hamza et mon binôme belkhiri khireddin et encadré par mdm zendoui et ms ouchene,
+
+
+ceci et notre plan de travail, nous allons commancer par une introduction sur le docker et la containérisation, âpres on pass au aspect de sécurité du docker , apres ca nous allons entrer au detail de notre application, parlant sur les CIS, les vulnérabilité et notre interface web pour entamer tout ca, et finalement on va fini par une conclusion  
+donc le premier point et la containérisation 
+
+
+la containérisation est une technique consiste à encapsuler une application dans un conteneur avec son propre environnement d'exploitation, déffirament au virtualisation quand chaque vm a ca propre system d'exploitation, les conteneurs utilisent l'OS hôte. la bonne chose est que nous pouvons déployer plusieurs conteneurs sur un seul serveur, car les conteneurs sont très légère, donc nous n’avons plus besoin de dédier un serveur entier à une seule application
+
+l'un des meilleur solution des conteneurs est le docker, le docker est un logiciel, ou un outil de plateforme ouverte qui facilite la création, le déploiement et l'exécution d'application en utilisant des conteneurs. Les conteneurs Docker nous permettent de séparer les applications de l'infrastructure afin de pouvoir déployer des applications/logicielles plus rapidement. Docker offre ---une Efficacité des ressources
+--- une Portabilité, ca veut dire que Toutes les dépendances d'une application sont regroupées dans le conteneur. et c'est très facile de les déplacées entre les environnements de test et développement
+--- et une Déploiement et test continus
+
+notre projet focalise sur le coté de sécurité du docker, 
+
+Pour sécuriser les conteneurs de Docker, nous avons prendre une approche globale, nous avons 2 couche de sécurité, la sécurité du docker, et la sécurité de linux 
+d’abord, pourquoi nous sécurise les docker? dans un scenario ou un attacker a utiliser une faille pour prendre une des nos conteneur de docker, si il y avais une mauvaise configuration et separation des conteneurs, attacker peut traverser jusqu'au autre conteneur et prendre tout notre application, il peut aussi utilisé des fichier avec des mauvaise permission pour traverser de conteneur jusqu'au system d'hote de linux, donc il est essentiel de sécuriser tous les éléments, de l'hôte au réseau et tout ce qui se trouve entre les deux
+pour la sécurisation de linux, on focalise sur la verification de sécurité de tout fichier de docker installer dans le system, avec la configuration et les paramètre de l'hote docker
+
+on entrant maintenant au detail de notre application 
+la premiere méthode pour la sectorisation des dockers est les script de verification des CIS
+commandant par parler sur les cis 
+C’est un document publié par le Centre pour la sécurité sur Internet (CIS) qui étudie les meilleures pratiques en matière de cybersécurité dans les environnements conteneurisés
+les expert de ce centre a développer les benchmark sur les claude, les system d'exploitation, et plusieurs d'autre platrorm comme le docker
+les benchmark de docker contient des recommandations détaillées sur la sécurisation de Docker, il y a 7 catégorie des recommandation chaqu'une contiens des specific standard qu'il doit être appliquer pour asurer la securité des docker. par example la catégorie c'est pour la configuration de hote, la catégorie pour la configuration de docker engine, et la catégorie 4 pour la configuration des images de conteneurs
+
+maintenant la question est que ce qu'on devrons faire avec ces CIS, pour assurer que c'est standard sont bien appliquer nous avons développé des script de verification des cis, dans lequel nous vérifions si les bonnes pratiques sont bien appliquées, nous avons plus de 100 script, chaqu'un contient sa logique et son propre code  
+nous avons rentamer tous ces script avec ansible pour l'exécution automatisé sur plusieurs hots de docker au meme temps  
+le résultat des script peut être [PASS] qui veut dire que la recommandation est bien applique, ou [WARN] qui est l’apposer de cet dernier,
+pour les recommandation non-appliquer, nous avons créer les script de correction pour les corriger, chaque script de CIS possède sa script de correction dans le cas de non conformité, i y a deux type de script de correction, les simple correction qui vont être automatique, et les correction compliquer, qui relevé sur la politique de sécutité de l'entreprise, ces dernier sont pas automatique et requite l'intervention de specialist du docker pour les corriger  
+
+
+la deuxième méthode pour la sécurite des docker est le script de scan de vulnerabilité 
+mais d'abord c'est quoi les vulnérabilité? les vulns dans le domaine de sécurité sont tout faille dans un platform ou application que un attackeur peut l'utiliser pour faire des activité malveillant
+ces vulnérabilité sont gérer par la société MITRE, qui a créer la base de donnée de tous les vulnérabilité existe dans tous les temps, chaque vuln a son propre ID, description, impact, score...etc elle s'appelle la base de donnée CVE
+
+dans notre script de vulnérabilité, nous testons si la version de notre docker est vulnérable en utilisant la base donnée CVE, nous avons utilisé le python pour développé ce script.
+D'abord, nous téléchargeons la base de donné CVE dans notre system, après nous récupérons les different version du docker pour les tester, quand en parlons de core du docker, les element essentiel sont le docker, le runC, et le containerd, chaqu'un a son propre role pour le bon fonctionnement du docker, nous avons prendre les version de tous ces trois pour nos tests, on a utilisé ansible pour récupérer ces version de façon automatiser dans plusieurs hotes du docker. la troisième étape et la comparaison entre les versions récupérées et les versions de la base de données Dans cette étape, nous avons comparé chaque plateforme sélectionnée avec tous les CVE de la base de données, s’il y a une correspondance entre notre version et une version d’une CVE, ça veut dire que le platform sélectionné est vulnérable à cette CVE
+et finalement dans le cas d'existence de vulnérabilités, nous recommandons les mises à jour qu’il faut appliquer afin de corriger le problème et éviter tout risque de compromission de la sécurité du système
+
+finalemet on pass a notre interface web 
+nous avons mis en place une simple interface web afin de simplifier les différentes actions et opérations d’exécution des scripts, et pour ne pas juste resté dans l’environnement CLI 
+
+
+
+et pour conclure, notre solution est une solution complet pour la secutisation d'infrastructure docker, 
+
+
