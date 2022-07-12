@@ -18,7 +18,7 @@ d’abord, pourquoi nous sécurise les docker? dans un scenario ou un attacker a
 pour la sécurisation de linux, on focalise sur la verification de sécurité de tout fichier de docker installer dans le system, avec la configuration et les paramètre de l'hote docker
 
 on entrant maintenant au detail de notre application 
-la premiere méthode pour la sectorisation des dockers est les script de verification des CIS
+la premiere méthode pour la sectorisation des dockers que nous avon developpé est les script de verification des CIS
 commandant par parler sur les cis 
 C’est un document publié par le Centre pour la sécurité sur Internet (CIS) qui étudie les meilleures pratiques en matière de cybersécurité dans les environnements conteneurisés
 les expert de ce centre a développer les benchmark sur les claude, les system d'exploitation, et plusieurs d'autre platrorm comme le docker
